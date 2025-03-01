@@ -1,31 +1,7 @@
+import { formatDate } from "../utils/dateTimeUtils"
+
 export default function UserListItem(props) {
 
-    // const {
-    //     firstName,
-    //     lastName,
-    //     email,
-    //     phoneNumber,
-    //     createdAt,
-    //     imageUrl
-    // } = props
-
-    // console.log('Prop values are:',firstName,lastName,email,phoneNumber,createdAt,imageUrl)
-   
-    // const {country,city,street,streetNumber} = props.address
-
-    // console.log('Props address values are:',country,city,street,streetNumber)
-
-    //console.log('Passed user props are:',props)
-
-        console.log('Passed props are:',props)
-        const isoString = props.createdAt
-        const date = new Date(isoString)
-
-        const formattedDate = date.toLocaleDateString('en-US',{
-            year:'numeric',
-            month:'long',
-            day:'numeric'
-        })
     
     return (
         <>
@@ -38,7 +14,7 @@ export default function UserListItem(props) {
                 <td>{props.lastName}</td>
                 <td>{props.email}</td>
                 <td>{props.phoneNumber}</td>
-                <td>{formattedDate}</td>
+                <td>{formatDate(props.createdAt)}</td>
 
                 <td className="actions">
                     <button className="btn edit-btn" title="Edit">
