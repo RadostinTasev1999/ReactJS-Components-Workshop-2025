@@ -6,11 +6,13 @@ import { useState } from "react";
 import Pagination from "./Pagination";
 import SearchUser from "./Search";
 import UserListItem from "./UserListItem";
+import AddUser from "./AddUser";
 
 
 export default function UserList(){
 
   const [user,setUser] = useState([])
+  const [display,setDisplay] = useState(false)
 
   /*
   Fetch users from DB:
@@ -23,12 +25,22 @@ export default function UserList(){
         setUser(result)
       })
   },[])
+  
+  const addUser = () => {
+    setDisplay(true)
+  }
 
     return (
         <>
         <section className="card users-container">
           
-          < SearchUser />  
+          <SearchUser />  
+
+          {
+            display && (
+              <AddUser />
+            )
+          }
 
           <div className="table-wrapper">
 
@@ -97,7 +109,7 @@ export default function UserList(){
             </table>
           </div>
 
-          <button className="btn-add btn">Add new user</button>
+          <button className="btn-add btn" onClick={addUser}>Add new user</button>
 
           <Pagination />
         </section>
