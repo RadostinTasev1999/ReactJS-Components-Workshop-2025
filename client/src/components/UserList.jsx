@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 
 import userService from "../services/userService";
+import { useState } from "react";
 
 import Pagination from "./Pagination";
 import SearchUser from "./Search";
@@ -8,6 +9,8 @@ import UserListItem from "./UserListItem";
 
 
 export default function UserList(){
+
+  const [user,setUser] = useState([])
 
   /*
   Fetch users from DB:
@@ -17,6 +20,7 @@ export default function UserList(){
     userService.getAll()
       .then(result => {
         console.log('Result from fetching DB is:', result)
+        setUser(result)
       })
   },[])
 
@@ -84,7 +88,11 @@ export default function UserList(){
                 </tr>
               </thead>
               <tbody>
-                <UserListItem />
+              
+              {
+                user.map(object => <UserListItem key={object._id} {...object}/>)
+              }
+               
               </tbody>
             </table>
           </div>

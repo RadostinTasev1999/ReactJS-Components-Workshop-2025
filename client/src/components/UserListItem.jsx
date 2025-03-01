@@ -1,16 +1,44 @@
-export default function UserListItem() {
+export default function UserListItem(props) {
+
+    // const {
+    //     firstName,
+    //     lastName,
+    //     email,
+    //     phoneNumber,
+    //     createdAt,
+    //     imageUrl
+    // } = props
+
+    // console.log('Prop values are:',firstName,lastName,email,phoneNumber,createdAt,imageUrl)
+   
+    // const {country,city,street,streetNumber} = props.address
+
+    // console.log('Props address values are:',country,city,street,streetNumber)
+
+    //console.log('Passed user props are:',props)
+
+        console.log('Passed props are:',props)
+        const isoString = props.createdAt
+        const date = new Date(isoString)
+
+        const formattedDate = date.toLocaleDateString('en-US',{
+            year:'numeric',
+            month:'long',
+            day:'numeric'
+        })
+    
     return (
         <>
             <tr>
                 <td>
-                    <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
-                        alt="Peter's profile" className="image" />
+                    <img src={props.imageUrl}
+                        alt={`${props.firstName}'s profile`} className="image" />
                 </td>
-                <td>Peter</td>
-                <td>Johnson</td>
-                <td>peter@abv.bg</td>
-                <td>0812345678</td>
-                <td>June 28, 2022</td>
+                <td>{props.firstName}</td>
+                <td>{props.lastName}</td>
+                <td>{props.email}</td>
+                <td>{props.phoneNumber}</td>
+                <td>{formattedDate}</td>
 
                 <td className="actions">
                     <button className="btn edit-btn" title="Edit">
