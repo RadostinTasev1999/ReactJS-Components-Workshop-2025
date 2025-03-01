@@ -1,8 +1,25 @@
+import { useEffect } from "react";
+
+import userService from "../services/userService";
+
 import Pagination from "./Pagination";
 import SearchUser from "./Search";
 import UserListItem from "./UserListItem";
 
+
 export default function UserList(){
+
+  /*
+  Fetch users from DB:
+  */
+
+  useEffect(() => {
+    userService.getAll()
+      .then(result => {
+        console.log('Result from fetching DB is:', result)
+      })
+  },[])
+
     return (
         <>
         <section className="card users-container">
