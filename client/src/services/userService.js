@@ -16,12 +16,38 @@ export default {
     },
 
     async create(userData){
+
+        // const date = new Date();
+        
+        // const dateToIso = date.toISOString();
+
+        const {country,city,street,streetNumber, ...postData} = userData;
+
+        /*
+        ...postData - rest operator, collects all remaining properties
+                      that are not explicitly destructured into postData.
+        */
+        
+        
+        postData.address = {
+            country,
+            city,
+            street,
+            streetNumber
+        }
+        postData.createdAt = new Date().toISOString();
+        postData.updatedAt = new Date().toISOString();
+
+        console.log('Post Data is:', postData)
+
+        //console.log('Post Data is:', postData)
+
         const response = await fetch(baseUrl, {
             method:'POST',
             headers: {
                 'Content-Type':'application/json'
             },
-            body: JSON.stringify(userData)
+            body: JSON.stringify(postData)
         })
 
         const result = await response.json()

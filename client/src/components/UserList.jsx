@@ -7,12 +7,15 @@ import Pagination from "./Pagination";
 import SearchUser from "./Search";
 import UserListItem from "./UserListItem";
 import AddUser from "./AddUser";
+import UserDetails from "./UserDetails";
 
 
 export default function UserList(){
 
   const [user,setUser] = useState([])
   const [display,setDisplay] = useState(false)
+  const [userIdInfo,setUserIdInfo] = useState(); // undefined
+ 
 
   /*
   Fetch users from DB:
@@ -41,9 +44,21 @@ const saveUserHandler = async (event) => {
 
   //console.log('Form data is:', new FormData(event.target))
   const form = new FormData(event.target)
+  /*
+  new FormData() - object which allows you to easily construct a set of key-value
+                   pairs, representing form fileds and their values.
+  event.target() - form element which has triggered the event.
+  new FormData(event.target) - createsa new FormData object by taking the form element
+                               which has triggered the event as its argument
+                     this object contains all the input data from that form
+  */
   console.log('Form is:', form)
   //! Get form data
   const userData = Object.fromEntries(form)
+  /*
+  Object.fromEntries() - this method transforms a list of key-value pairs 
+                         into an object
+  */
 console.log('Object from entries are:', userData)
   console.log('User data is:', userData)
   //! Create new user on server
@@ -59,9 +74,13 @@ createdUser to the end of it
   //! Close modal
   setDisplay(false)
 }
+
+const toggleUserInfo = (_id) => {
+  setUserIdInfo(_id)
+}
     return (
         <>
-        <section className="card users-container">
+        <section className="card users-container">  
           
           <SearchUser />  
 
@@ -73,6 +92,14 @@ createdUser to the end of it
                   />
             )
           }
+
+          {
+            userIdInfo && (
+               <UserDetails userId={userIdInfo} />
+          )
+          }
+
+          {/* <UserDetails /> */}
 
           <div className="table-wrapper">
 
@@ -134,8 +161,12 @@ createdUser to the end of it
               <tbody>
               
               {
-                user.map(object => <UserListItem key={object._id} {...object}/>)
+                user.map(object => <UserListItem key={object._id} {...object} toggleInfo={toggleUserInfo}/>)
               }
+              {/* 
+              {...object} - spread syntax. Used to pass all the properties of the object
+                            as individual props to the UserListItem component
+              */}
                
               </tbody>
             </table>
