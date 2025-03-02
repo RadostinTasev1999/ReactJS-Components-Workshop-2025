@@ -1,4 +1,11 @@
+import { useEffect } from "react"
+// import userService from "../services/userService"
+
 export default function UserDetails({userId}) {
+
+    useEffect(() => {
+        
+    },[])
 
     return (
         <>
