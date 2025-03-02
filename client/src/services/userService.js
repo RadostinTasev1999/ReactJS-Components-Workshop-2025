@@ -13,5 +13,19 @@ export default {
         throw new Error(error)
     }
       
+    },
+
+    async create(userData){
+        const response = await fetch(baseUrl, {
+            method:'POST',
+            headers: {
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify(userData)
+        })
+
+        const result = await response.json()
+
+        return result;
     }
 }

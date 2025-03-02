@@ -1,4 +1,7 @@
-export default function AddUser() {
+
+export default function AddUser({closeForm, saveForm}) {
+
+
     return (
         <>
             <div className="overlay">
@@ -7,7 +10,7 @@ export default function AddUser() {
                     <div className="user-container">
                         <header className="headers">
                             <h2>Edit User/Add User</h2>
-                            <button className="btn close">
+                            <button className="btn close" onClick={closeForm}>
                                 <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="xmark"
                                     className="svg-inline--fa fa-xmark" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
                                     <path fill="currentColor"
@@ -16,7 +19,7 @@ export default function AddUser() {
                                 </svg>
                             </button>
                         </header>
-                        <form>
+                        <form onSubmit={saveForm}>
                             <div className="form-row">
                                 <div className="form-group">
                                     <label htmlFor="firstName">First name</label>
@@ -93,8 +96,8 @@ export default function AddUser() {
                                 </div>
                             </div>
                             <div id="form-actions">
-                                <button id="action-save" className="btn" type="submit">Save</button>
-                                <button id="action-cancel" className="btn" type="button">
+                                <button id="action-save" className="btn" type="submit" >Save</button>
+                                <button id="action-cancel" className="btn" type="button" onClick={closeForm}>
                                     Cancel
                                 </button>
                             </div>
@@ -102,6 +105,8 @@ export default function AddUser() {
                     </div>
                 </div>
             </div>
+         
+            
         </>
     )
 }

@@ -30,6 +30,35 @@ export default function UserList(){
     setDisplay(true)
   }
 
+
+const closeUserForm = () => {
+   setDisplay(false)
+}
+
+const saveUserHandler = async (event) => {
+  //! Stop default refresh
+  event.preventDefault()
+
+  //console.log('Form data is:', new FormData(event.target))
+  const form = new FormData(event.target)
+  console.log('Form is:', form)
+  //! Get form data
+  const userData = Object.fromEntries(form)
+console.log('Object from entries are:', userData)
+  console.log('User data is:', userData)
+  //! Create new user on server
+  const createdUser = await userService.create(userData)
+
+  console.log('Created   user is:',createdUser)
+  //! Update local state
+  setUser(state => [...state,createdUser])
+/*
+We create a new array by copying elements from the state array and adding
+createdUser to the end of it
+*/
+  //! Close modal
+  setDisplay(false)
+}
     return (
         <>
         <section className="card users-container">
@@ -38,7 +67,10 @@ export default function UserList(){
 
           {
             display && (
-              <AddUser />
+              <AddUser 
+                  closeForm={closeUserForm} 
+                  saveForm={saveUserHandler}
+                  />
             )
           }
 
