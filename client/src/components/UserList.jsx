@@ -16,7 +16,7 @@ export default function UserList(){
   const [user,setUser] = useState([])
   const [display,setDisplay] = useState(false)
   const [userIdInfo,setUserIdInfo] = useState(null); 
-  const [userDelete, setUserDelete] = useState();
+  const [userIdDelete, setUserIdDelete] = useState();
  
 
   /*
@@ -86,12 +86,25 @@ const toggleUserInfo = (_id) => {
 }
 
 const deleteUserHandler = (_id) => {
+  setUserIdDelete(_id)
+}
 
+const userDeleteCloseHandler = () => {
+  setUserIdDelete(null);
 }
 
 const onClose = () => {
   setUserIdInfo(false)
 }
+
+const deleteUserFromDB = async() => {
+    // DELETE request to server
+    await userService.delete(userIdInfo);
+    // DELETE from local state
+    setUser(state => state.filter(user => user._id !== userIdInfo))
+    // close modal
+    setUserIdDelete(null)
+} 
 
     return (
         <>
@@ -115,8 +128,8 @@ const onClose = () => {
           }
 
           {
-            userDelete && (
-              <DeleteUser />
+            userIdDelete && (
+              <DeleteUser onClose={userDeleteCloseHandler} onDelete={deleteUserFromDB} />
             )
           }
 
