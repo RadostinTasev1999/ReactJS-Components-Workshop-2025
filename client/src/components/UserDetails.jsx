@@ -6,7 +6,7 @@ import userService from "../services/userService"
 
 export default function UserDetails({userId,displayInfo}) {
 
-    console.log("User id in UserDetails is:", userId)
+    
 
 const [user,setUser] = useState({}) // default value of user if empty object
 
@@ -17,7 +17,7 @@ const [user,setUser] = useState({}) // default value of user if empty object
             })
     },[userId])
 
-    
+    console.log('User is:', user)
 
     return (
         <>
@@ -51,7 +51,7 @@ const [user,setUser] = useState({}) // default value of user if empty object
                                 <p>Phone Number: <strong>{user.phoneNumber}</strong></p>
                                 <p>
                                     Address:
-                                    <strong> {`${user.address.country},${user.address.city}, ${user.address.street} ${user.address.streetNumber}`} </strong>
+                                    <strong> {`${user.address?.country},${user.address?.city}, ${user.address?.street} ${user.address?.streetNumber}`} </strong>
                                 </p>
 
                                 <p>Created on: <strong>{user.createdAt}</strong></p>

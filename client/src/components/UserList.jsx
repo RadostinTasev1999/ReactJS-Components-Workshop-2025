@@ -8,6 +8,7 @@ import SearchUser from "./Search";
 import UserListItem from "./UserListItem";
 import AddUser from "./AddUser";
 import UserDetails from "./UserDetails";
+import DeleteUser from "./DeleteUser";
 
 
 export default function UserList(){
@@ -15,6 +16,7 @@ export default function UserList(){
   const [user,setUser] = useState([])
   const [display,setDisplay] = useState(false)
   const [userIdInfo,setUserIdInfo] = useState(null); 
+  const [userDelete, setUserDelete] = useState();
  
 
   /*
@@ -83,6 +85,10 @@ const toggleUserInfo = (_id) => {
   setUserIdInfo(_id)
 }
 
+const deleteUserHandler = (_id) => {
+
+}
+
 const onClose = () => {
   setUserIdInfo(false)
 }
@@ -107,6 +113,14 @@ const onClose = () => {
                <UserDetails userId={userIdInfo} displayInfo={onClose}/>
           )
           }
+
+          {
+            userDelete && (
+              <DeleteUser />
+            )
+          }
+
+          
 
           {/* <UserDetails /> */}
 
@@ -170,7 +184,7 @@ const onClose = () => {
               <tbody>
               
               {
-                user.map(object => <UserListItem key={object._id} {...object} toggleInfo={toggleUserInfo}/>)
+                user.map(object => <UserListItem key={object._id} {...object} toggleInfo={toggleUserInfo} deleteUser={deleteUserHandler}/>)
               }
               {/* 
               {...object} - by this spread syntax, we pass all the properties of the object to UserListItem as individual props.
