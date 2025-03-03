@@ -14,21 +14,24 @@ export default function UserList(){
 
   const [user,setUser] = useState([])
   const [display,setDisplay] = useState(false)
-  const [userIdInfo,setUserIdInfo] = useState(); // undefined
+  const [userIdInfo,setUserIdInfo] = useState(null); 
  
 
   /*
-  Fetch users from DB:
+  Fetch users from DataBase:
   */
 
   useEffect(() => {
     userService.getAll()
       .then(result => {
-        console.log('Result from fetching DB is:', result)
+       // Get all users
         setUser(result)
+        //Update user state and trigger re-render of the component
       })
   },[])
   
+ 
+
   const addUser = () => {
     setDisplay(true)
   }
@@ -59,7 +62,7 @@ const saveUserHandler = async (event) => {
   Object.fromEntries() - this method transforms a list of key-value pairs 
                          into an object
   */
-console.log('Object from entries are:', userData)
+  console.log('Object from entries are:', userData)
   console.log('User data is:', userData)
   //! Create new user on server
   const createdUser = await userService.create(userData)
@@ -76,8 +79,14 @@ createdUser to the end of it
 }
 
 const toggleUserInfo = (_id) => {
+  console.log('ID inside the toggleUserInfo is:', _id)
   setUserIdInfo(_id)
 }
+
+const onClose = () => {
+  setUserIdInfo(false)
+}
+
     return (
         <>
         <section className="card users-container">  
@@ -95,7 +104,7 @@ const toggleUserInfo = (_id) => {
 
           {
             userIdInfo && (
-               <UserDetails userId={userIdInfo} />
+               <UserDetails userId={userIdInfo} displayInfo={onClose}/>
           )
           }
 
@@ -164,8 +173,8 @@ const toggleUserInfo = (_id) => {
                 user.map(object => <UserListItem key={object._id} {...object} toggleInfo={toggleUserInfo}/>)
               }
               {/* 
-              {...object} - spread syntax. Used to pass all the properties of the object
-                            as individual props to the UserListItem component
+              {...object} - by this spread syntax, we pass all the properties of the object to UserListItem as individual props.
+
               */}
                
               </tbody>

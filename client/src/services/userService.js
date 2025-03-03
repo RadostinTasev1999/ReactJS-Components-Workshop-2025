@@ -1,41 +1,50 @@
 const baseUrl = 'http://localhost:3030/jsonstore/users'
 
 export default {
-   async getAll(){
-    try {
-        const response = await fetch(baseUrl);
-        const result = await response.json()
+    async getAll() {
+        try {
+            const response = await fetch(baseUrl);
+            const result = await response.json()
 
-        const users = Object.values(result)
+            const users = Object.values(result)
 
-        return users
-    } catch (error) {
-        throw new Error(error)
-    }
-      
+            return users
+        } catch (error) {
+            throw new Error(error)
+        }
+
     },
-    async getOne(userId){
-        const response = await fetch(`${baseUrl}/${userId}`)
+    async getOne(userId) {
+        try {
+            const response = await fetch(`${baseUrl}/${userId}`)
 
-        const result = await response.json()
-        
-        return result;
+            const result = await response.json()
+
+            console.log('Result from DB is:', result)
+
+            return result;
+            
+        } catch (error) {
+            throw new Error(error)
+        }
+
+
     },
 
-    async create(userData){
+    async create(userData) {
 
         // const date = new Date();
-        
+
         // const dateToIso = date.toISOString();
 
-        const {country,city,street,streetNumber, ...postData} = userData;
+        const { country, city, street, streetNumber, ...postData } = userData;
 
         /*
         ...postData - rest operator, collects all remaining properties
                       that are not explicitly destructured into postData.
         */
-        
-        
+
+
         postData.address = {
             country,
             city,
@@ -50,9 +59,9 @@ export default {
         //console.log('Post Data is:', postData)
 
         const response = await fetch(baseUrl, {
-            method:'POST',
+            method: 'POST',
             headers: {
-                'Content-Type':'application/json'
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify(postData)
         })
