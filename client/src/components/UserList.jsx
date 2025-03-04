@@ -11,12 +11,14 @@ import UserDetails from "./UserDetails";
 import DeleteUser from "./DeleteUser";
 
 
+
 export default function UserList(){
 
   const [user,setUser] = useState([])
   const [display,setDisplay] = useState(false)
   const [userIdInfo,setUserIdInfo] = useState(null); 
-  const [userIdDelete, setUserIdDelete] = useState();
+  const [onDeleteId, setDeleteId] = useState(null);
+  
  
 
   /*
@@ -85,26 +87,34 @@ const toggleUserInfo = (_id) => {
   setUserIdInfo(_id)
 }
 
-const deleteUserHandler = (_id) => {
-  setUserIdDelete(_id)
+const closeDeletePrompt = () => {
+    setDisplay(false)
 }
 
-const userDeleteCloseHandler = () => {
-  setUserIdDelete(null);
+const toggleDeletePrompt = (_id) => {
+    setDeleteId(_id)
 }
+
 
 const onClose = () => {
   setUserIdInfo(false)
 }
 
-const deleteUserFromDB = async() => {
-    // DELETE request to server
-    await userService.delete(userIdInfo);
-    // DELETE from local state
-    setUser(state => state.filter(user => user._id !== userIdInfo))
+const deleteUser = async(userId) => {
+    // DELETE request to DB
+      await userService.delete(userId)
+
+
+    // Update user state
+      setUser(state => state.filter(user => user._id !== userId))
+
+     //! filter() - create a shallow copy of a portion of a given array,
+     //!            filtered down to just the elements from the given array
+     //!            that pass the test implemented by the provided function
     // close modal
-    setUserIdDelete(null)
-} 
+    setDeleteId(null);
+}
+
 
     return (
         <>
@@ -128,12 +138,11 @@ const deleteUserFromDB = async() => {
           }
 
           {
-            userIdDelete && (
-              <DeleteUser onClose={userDeleteCloseHandler} onDelete={deleteUserFromDB} />
-            )
+            onDeleteId && (
+              <DeleteUser closePrompt={closeDeletePrompt} onDelete={deleteUser} userId={onDeleteId}/>
+          )
           }
 
-          
 
           {/* <UserDetails /> */}
 
@@ -197,7 +206,7 @@ const deleteUserFromDB = async() => {
               <tbody>
               
               {
-                user.map(object => <UserListItem key={object._id} {...object} toggleInfo={toggleUserInfo} deleteUser={deleteUserHandler}/>)
+                user.map(object => <UserListItem key={object._id} {...object} toggleInfo={toggleUserInfo} toggleDelete={toggleDeletePrompt}/>)
               }
               {/* 
               {...object} - by this spread syntax, we pass all the properties of the object to UserListItem as individual props.

@@ -1,17 +1,18 @@
 export default function DeleteUser({
-    onClose,
-    onDelete
+    closePrompt,
+    onDelete,
+    userId
 }) {
 
     return (
         <>
             <div className="overlay">
-                <div className="backdrop" onClick={onClose}></div>
+                <div className="backdrop" onClick={closePrompt} ></div>
                 <div className="modal">
                     <div className="confirm-container">
                         <header className="headers">
                             <h2>Are you sure you want to delete this account?</h2>
-                             <button className="btn close" onClick={onClose}>
+                             <button className="btn close" onClick={closePrompt}>
                                 <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="xmark"
                                     className="svg-inline--fa fa-xmark" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
                                     <path fill="currentColor"
@@ -22,8 +23,8 @@ export default function DeleteUser({
                         </header>
                         <div className="actions">
                             <div id="form-actions">
-                                <button id="action-save" className="btn" type="submit" onClick={onDelete}>Delete</button>
-                                <button id="action-cancel" className="btn" type="button" onClick={onClose}>
+                                <button id="action-save" className="btn" type="submit" onClick={() => onDelete(userId)}>Delete</button>
+                                <button id="action-cancel" className="btn" type="button" onClick={closePrompt}>
                                     Cancel
                                 </button>
                             </div>

@@ -70,15 +70,16 @@ export default {
 
         return result;
     },
+    
     async delete(userId){
 
         const response = await fetch(`${baseUrl}/${userId}`,{
-                method: 'DELETE'
-        });
+            method:'DELETE'
+        })
 
         const result = await response.json()
 
-        return result
+        return result;
     }
 
 }
