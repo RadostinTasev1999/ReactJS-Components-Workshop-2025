@@ -9,6 +9,7 @@ import UserListItem from "./UserListItem";
 import AddUser from "./AddUser";
 import UserDetails from "./UserDetails";
 import DeleteUser from "./DeleteUser";
+import EditUser from './EditUser'
 
 
 
@@ -18,6 +19,7 @@ export default function UserList(){
   const [display,setDisplay] = useState(false)
   const [userIdInfo,setUserIdInfo] = useState(null); 
   const [onDeleteId, setDeleteId] = useState(null);
+  const [userIdEdit, setUserIdEdit] = useState(null);
   
  
 
@@ -97,7 +99,8 @@ const toggleDeletePrompt = (_id) => {
 
 
 const onClose = () => {
-  setUserIdInfo(false)
+  setUserIdInfo(false);
+  setUserIdEdit(null);
 }
 
 const deleteUser = async(userId) => {
@@ -114,6 +117,12 @@ const deleteUser = async(userId) => {
     // close modal
     setDeleteId(null);
 }
+
+const toggleEditPrompt = (userId) => {
+  setUserIdEdit(userId);
+}
+
+
 
 
     return (
@@ -141,6 +150,12 @@ const deleteUser = async(userId) => {
             onDeleteId && (
               <DeleteUser closePrompt={closeDeletePrompt} onDelete={deleteUser} userId={onDeleteId}/>
           )
+          }
+
+          {
+            userIdEdit && (
+              <EditUser closeEditForm={onClose}/>
+            )
           }
 
 
@@ -206,7 +221,14 @@ const deleteUser = async(userId) => {
               <tbody>
               
               {
-                user.map(object => <UserListItem key={object._id} {...object} toggleInfo={toggleUserInfo} toggleDelete={toggleDeletePrompt}/>)
+                user.map(object => 
+                  <UserListItem 
+                    key={object._id} 
+                    {...object} 
+                    toggleInfo={toggleUserInfo} 
+                    toggleDelete={toggleDeletePrompt}
+                    toggleEdit={toggleEditPrompt}
+                    />)
               }
               {/* 
               {...object} - by this spread syntax, we pass all the properties of the object to UserListItem as individual props.
