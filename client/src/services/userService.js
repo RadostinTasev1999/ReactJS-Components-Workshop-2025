@@ -80,6 +80,35 @@ export default {
         const result = await response.json()
 
         return result;
+    },
+
+    async editUser(userId,userData){
+
+        const { country, city, street, streetNumber, ...editData } = userData
+
+        editData.address = {
+            country,
+            city,
+            street,
+            streetNumber
+        }
+
+        // postData.createdAt = new Date().toISOString();
+        editData.updatedAt = new Date().toISOString();
+        editData.createdAt = new Date().toISOString();
+
+        console.log('EditData is:', editData)
+        
+
+        const response = await fetch(`${baseUrl}/${userId}`,{
+            method:'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(editData)
+        })
+
+            const result = await response.json()
+
+            return result;
     }
 
 }

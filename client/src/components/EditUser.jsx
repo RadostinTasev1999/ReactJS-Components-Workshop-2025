@@ -1,6 +1,8 @@
 export default function UserEdit(
     {
-        closeEditForm
+        closeEditForm,
+        uesrId,
+        editUser
     }
 ) {
     return (
@@ -20,7 +22,7 @@ export default function UserEdit(
                                 </svg>
                             </button>
                         </header>
-                        <form>
+                        <form onSubmit={editUser}>
                             <div className="form-row">
                                 <div className="form-group">
                                     <label htmlFor="firstName">First name</label>

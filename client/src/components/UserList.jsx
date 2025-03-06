@@ -118,8 +118,37 @@ const deleteUser = async(userId) => {
     setDeleteId(null);
 }
 
+/*
+this function will be invoked when the user clicks the Edit button in UserListItem Component
+*/
 const toggleEditPrompt = (userId) => {
   setUserIdEdit(userId);
+}
+
+
+const editUserHandler = async(event) => {
+
+  // Stop default refresh after submit
+
+  event.preventDefault();
+  const userId = userIdEdit
+
+  // Get Form data
+  const form = new FormData(event.target)
+  const userData = Object.fromEntries(form)
+
+  console.log('userEditData is:', userData)
+  // Update server
+  const editUser = await userService.editUser(userId,userData)
+
+  console.log('Editted user is:', editUser)
+
+  // Update local state
+  setUser(state => state.map(user => user._id === userId ? editUser : user))
+  // Close modal
+  setUserIdEdit(null);
+
+
 }
 
 
@@ -154,7 +183,11 @@ const toggleEditPrompt = (userId) => {
 
           {
             userIdEdit && (
-              <EditUser closeEditForm={onClose}/>
+              <EditUser 
+                closeEditForm={onClose}
+                userId={userIdEdit}
+                editUser={editUserHandler}
+                />
             )
           }
 
