@@ -97,6 +97,8 @@ export default {
         editData.updatedAt = new Date().toISOString();
         editData.createdAt = new Date().toISOString();
 
+        editData._id = userId
+
         console.log('EditData is:', editData)
         
 

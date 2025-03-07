@@ -185,7 +185,7 @@ const editUserHandler = async(event) => {
             userIdEdit && (
               <EditUser 
                 closeEditForm={onClose}
-                userId={userIdEdit}
+                // userId={userIdEdit}
                 editUser={editUserHandler}
                 />
             )

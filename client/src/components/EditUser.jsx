@@ -1,7 +1,7 @@
 export default function UserEdit(
     {
         closeEditForm,
-        uesrId,
+        // userId,
         editUser
     }
 ) {

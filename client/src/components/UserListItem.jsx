@@ -13,7 +13,7 @@ export default function UserListItem({
     toggleEdit
 }) {
 
-    console.log('User is:')
+    console.log('UserId is:',_id)
 
 //    console.log("Passed props are:", props)
     
