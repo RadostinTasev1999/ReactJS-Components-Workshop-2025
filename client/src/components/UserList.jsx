@@ -16,25 +16,42 @@ import EditUser from './EditUser'
 export default function UserList(){
 
   const [user,setUser] = useState([])
+  const [displayUsers, setDisplayUsers] = useState([]);
   const [display,setDisplay] = useState(false)
   const [userIdInfo,setUserIdInfo] = useState(null); 
   const [onDeleteId, setDeleteId] = useState(null);
   const [userIdEdit, setUserIdEdit] = useState(null);
+  const [searchValue, setSearchValue] = useState('')
+  //const [searchTerm, setSearchTerm] = useState('')
   
  
 
   /*
-  Fetch users from DataBase:
+  useEffect Hook allows you to perform side effects in your components
+  example: fetch data / directly update DOM / Timers
+  */
+
+  /*
+  useEffect runs on every render.
+  There are several ways to control when side effects run.
+  
   */
 
   useEffect(() => {
     userService.getAll()
+    // Attaches callbacks for the resolution and/or rejection of the Promise.
       .then(result => {
        // Get all users
         setUser(result)
         //Update user state and trigger re-render of the component
       })
   },[])
+  // [] - Runs only on the first render
+
+  useEffect(() => {
+      setDisplayUsers(user)
+      
+  },[user])
   
  
 
@@ -53,33 +70,18 @@ const saveUserHandler = async (event) => {
 
   //console.log('Form data is:', new FormData(event.target))
   const form = new FormData(event.target)
-  /*
-  new FormData() - object which allows you to easily construct a set of key-value
-                   pairs, representing form fileds and their values.
-  event.target() - form element which has triggered the event.
-  new FormData(event.target) - createsa new FormData object by taking the form element
-                               which has triggered the event as its argument
-                     this object contains all the input data from that form
-  */
-  console.log('Form is:', form)
+ 
+   // console.log('Form in saveUserHandler is:', form)
   //! Get form data
   const userData = Object.fromEntries(form)
-  /*
-  Object.fromEntries() - this method transforms a list of key-value pairs 
-                         into an object
-  */
-  console.log('Object from entries are:', userData)
   console.log('User data is:', userData)
   //! Create new user on server
   const createdUser = await userService.create(userData)
 
-  console.log('Created   user is:',createdUser)
+
   //! Update local state
   setUser(state => [...state,createdUser])
-/*
-We create a new array by copying elements from the state array and adding
-createdUser to the end of it
-*/
+
   //! Close modal
   setDisplay(false)
 }
@@ -151,14 +153,51 @@ const editUserHandler = async(event) => {
 
 }
 
+const onSearch = (e) => {
+  e.preventDefault()
 
+  const data = new FormData(e.target)
+  const {search, criteria} = Object.fromEntries(data)
 
+  console.log(search, criteria)
+  console.log('user state is:', user)
+  //setUser((state) => state.filter((obj) => obj.criteria === search))
+  if (criteria === '') {
+    window.alert('Please enter Search Criteria!')
+    return;
+  }
+  const searchResult = user.filter((el) => el[criteria] === search) 
+    // the name of the property is determined by the value of the variable criteria
+  console.log('searchResult', searchResult)
+  setDisplayUsers(searchResult)
+
+  // const displayedItems = user.filter((item) => {
+  //   return item.inlcudes(searchTerm)
+  // })
+  // setUser(displayedItems)
+}
+
+const clearSearch = () => {
+ setSearchValue('')
+ setDisplayUsers(user)
+}
+
+const handleChange = (e) => {
+  // console.log('Event target value is:', e.target.value)
+  setSearchValue(e.target.value)
+}
 
     return (
         <>
         <section className="card users-container">  
           
-          <SearchUser />  
+          <SearchUser
+            onSearch={onSearch}
+            onClear={clearSearch}
+            inputChangeHandler={handleChange}
+            searchValue={searchValue}
+            //searchTerm={searchTerm}
+            />  
 
           {
             display && (
@@ -185,7 +224,7 @@ const editUserHandler = async(event) => {
             userIdEdit && (
               <EditUser 
                 closeEditForm={onClose}
-                // userId={userIdEdit}
+                user = {user.find(user => user._id === userIdEdit)}
                 editUser={editUserHandler}
                 />
             )
@@ -254,7 +293,7 @@ const editUserHandler = async(event) => {
               <tbody>
               
               {
-                user.map(object => 
+                displayUsers.map(object => 
                   <UserListItem 
                     key={object._id} 
                     {...object} 
